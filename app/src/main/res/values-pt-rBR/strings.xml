@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OffTrail</string>
+    <string name="msg_splash">Carregando ...</string>
+    <string name="tx_sair">Sair</string>
+    <string name="tx_entrar">Entrar</string>
+    <string name="tx_senha">Senha</string>
+    <string name="tx_login">Login</string>
+</resources>
