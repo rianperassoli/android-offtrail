@@ -41,7 +41,9 @@ public class LoginActivity extends AppCompatActivity {
             Usuario usuario = db.validaLogin(login, senha);
 
             if (usuario != null) {
-                Intent telaMain = new Intent(this, MainActivity.class);
+                Intent telaMain = new Intent(this, MainActivity_.class);
+
+                telaMain.putExtra("usuario", usuario); //envia para a tela atraves de um hash
 
                 startActivity(telaMain);
 

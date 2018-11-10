@@ -13,18 +13,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.widget.Toast;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Fullscreen;
+import org.androidannotations.annotations.WindowFeature;
 
 import br.com.rianperassoli.webmob.offtrail.R;
+import br.com.rianperassoli.webmob.offtrail.model.Usuario;
 
+@EActivity(R.layout.activity_main)
+@Fullscreen
+@WindowFeature(Window.FEATURE_NO_TITLE)
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    @AfterViews
+    public void inicializar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -47,6 +54,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //pega o dado passado pelo putExtra na tela de login
+        Usuario usuario = (Usuario) getIntent().getSerializableExtra("usuario");
+
+        if (usuario != null) {
+            Toast.makeText(this, "Seja bem-vindo " + usuario.getEmail(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
