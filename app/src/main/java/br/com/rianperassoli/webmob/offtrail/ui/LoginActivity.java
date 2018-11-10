@@ -2,23 +2,28 @@ package br.com.rianperassoli.webmob.offtrail.ui;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.WindowFeature;
 
 import br.com.rianperassoli.webmob.offtrail.R;
+import br.com.rianperassoli.webmob.offtrail.helper.DatabaseHelper;
+import br.com.rianperassoli.webmob.offtrail.model.Usuario;
 
 @EActivity(R.layout.activity_login)
 @Fullscreen
 @WindowFeature(Window.FEATURE_NO_TITLE)
 public class LoginActivity extends AppCompatActivity {
+
+    @Bean
+    DatabaseHelper db;
 
     @ViewById(R.id.edtLogin)
     EditText edtLogin;
@@ -31,20 +36,31 @@ public class LoginActivity extends AppCompatActivity {
         String login = edtLogin.getText().toString();
         String senha = edtPassword.getText().toString();
 
-        if ((login != null) && (senha != null) && login.trim().equals("rian") && senha.trim().equals("rian")){
+        if (!login.trim().isEmpty() && !senha.trim().isEmpty()){
 
-            Intent telaMain = new Intent(this, MainActivity.class);
+            Usuario usuario = db.validaLogin(login, senha);
 
-            startActivity(telaMain);
+            if (usuario != null) {
+                Intent telaMain = new Intent(this, MainActivity.class);
 
-            finish();
+                startActivity(telaMain);
+
+                finish();
+            } else {
+                mostrarMensagemErroNoLogin("Login Inválido");
+            }
+
         } else {
-            Toast.makeText(this, "Login inválido", Toast.LENGTH_LONG).show();
-            edtLogin.setText("");
-            edtPassword.setText("");
-            edtLogin.requestFocus();
+            mostrarMensagemErroNoLogin("Informe o usuário e senha");
         }
 
+    }
+
+    public void mostrarMensagemErroNoLogin(String mensagem){
+        Toast.makeText(this, mensagem, Toast.LENGTH_LONG).show();
+        edtLogin.setText("");
+        edtPassword.setText("");
+        edtLogin.requestFocus();
     }
 
     public void sair(View v){
@@ -53,4 +69,6 @@ public class LoginActivity extends AppCompatActivity {
 
         System.exit(0);
     }
+
+
 }

@@ -1,5 +1,6 @@
 package br.com.rianperassoli.webmob.offtrail.model;
 
+import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -18,7 +19,7 @@ public class Trilheiro {
     @DatabaseField(foreign = true, foreignColumnName = "codigo")
     private Moto moto;
 
-    @DatabaseField(canBeNull = true)
+    @DatabaseField(dataType = DataType.BYTE_ARRAY)
     private byte[] foto;
 
     public Trilheiro(){}

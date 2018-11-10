@@ -8,11 +8,15 @@ import android.view.Window;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
 import org.androidannotations.annotations.WindowFeature;
 
+import java.sql.SQLException;
+
 import br.com.rianperassoli.webmob.offtrail.R;
+import br.com.rianperassoli.webmob.offtrail.helper.DatabaseHelper;
 
 @EActivity(R.layout.activity_splash)
 @Fullscreen
@@ -22,6 +26,7 @@ public class SplashActivity extends AppCompatActivity {
     @AfterViews
     @Background(delay = 3000)
     public void abrirLogin(){
+
         Intent telaLogin = new Intent(SplashActivity.this, LoginActivity_.class);
 
         startActivity(telaLogin);
