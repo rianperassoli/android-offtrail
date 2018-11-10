@@ -4,8 +4,10 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 @DatabaseTable
-public class Trilheiro {
+public class Trilheiro implements Serializable {
 
     @DatabaseField(generatedId = true)
     private Integer codigo;

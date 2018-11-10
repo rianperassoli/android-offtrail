@@ -3,8 +3,10 @@ package br.com.rianperassoli.webmob.offtrail.model;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.Serializable;
+
 @DatabaseTable
-public class Moto {
+public class Moto implements Serializable {
 
     @DatabaseField(generatedId = true)
     private Integer codigo;
