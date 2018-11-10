@@ -62,4 +62,9 @@ public class Moto {
     public void setCor(String cor) {
         this.cor = cor;
     }
+
+    @Override
+    public String toString() {
+        return "Moto " + marca + " " + modelo + " " + cin + " - " + cor;
+    }
 }

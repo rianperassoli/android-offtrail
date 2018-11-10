@@ -2,6 +2,14 @@ package br.com.rianperassoli.webmob.offtrail.rest;
 
 public class Endereco {
     String cep;
+    String logradouro;
+    String complemento;
+    String bairro;
+    String localidade;
+    String uf;
+    String unidade;
+    String ibge;
+    String gia;
 
     public String getCep() {
         return cep;
@@ -75,14 +83,7 @@ public class Endereco {
         this.gia = gia;
     }
 
-    String logradouro;
-    String complemento;
-    String bairro;
-    String localidade;
-    String uf;
-    String unidade;
-    String ibge;
-    String gia;
+
 
     @Override
     public String toString() {

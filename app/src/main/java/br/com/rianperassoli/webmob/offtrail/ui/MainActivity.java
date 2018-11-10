@@ -1,6 +1,7 @@
 package br.com.rianperassoli.webmob.offtrail.ui;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,21 +15,46 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Background;
+import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Fullscreen;
+import org.androidannotations.annotations.UiThread;
+import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.WindowFeature;
+import org.androidannotations.annotations.sharedpreferences.Pref;
+import org.androidannotations.rest.spring.annotations.RestService;
+
+import java.util.List;
 
 import br.com.rianperassoli.webmob.offtrail.R;
+import br.com.rianperassoli.webmob.offtrail.adapter.TrilheiroAdapter;
 import br.com.rianperassoli.webmob.offtrail.model.Usuario;
+import br.com.rianperassoli.webmob.offtrail.rest.CidadeClient;
+import br.com.rianperassoli.webmob.offtrail.rest.Endereco;
 
 @EActivity(R.layout.activity_main)
 @Fullscreen
 @WindowFeature(Window.FEATURE_NO_TITLE)
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    @ViewById
+    ListView lstTrilheiros;
+
+    @Bean
+    TrilheiroAdapter trilheiroAdapter;
+
+    @Pref
+    Configuracao_ configuracao;
+
+    @RestService
+    CidadeClient cidadeClient;
+
 
     @AfterViews
     public void inicializar(){
@@ -61,6 +87,25 @@ public class MainActivity extends AppCompatActivity
         if (usuario != null) {
             Toast.makeText(this, "Seja bem-vindo " + usuario.getEmail(), Toast.LENGTH_SHORT).show();
         }
+
+        View v = toolbar.getRootView();
+        v.setBackgroundColor(configuracao.cor().get());
+
+        Toast.makeText(this, configuracao.parametro().get(), Toast.LENGTH_SHORT).show();
+
+        //editar as configuracoes
+        //configuracao.edit().cor().put(Color.BLUE).apply();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        refreshListTrilheiros();
+    }
+
+    public  void refreshListTrilheiros(){
+        lstTrilheiros.setAdapter(trilheiroAdapter);
     }
 
     @Override
@@ -101,22 +146,28 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        if (id == R.id.nav_sincronizar) {
+            consultaCidadePorNome("Sao Miguel Do Oeste");
+        } else if (id == R.id.nav_preferencias) {
+            //legal
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @UiThread
+    public void mostrarResultado(String resultado){
+        Toast.makeText(this, resultado, Toast.LENGTH_LONG).show();
+    }
+
+    @Background
+    public void consultaCidadePorNome(String cidade){
+        List<Endereco> enderecos = cidadeClient.getEndereco(cidade);
+
+        if (enderecos != null && enderecos.size() > 0) {
+            mostrarResultado(enderecos.get(0).toString());
+        }
     }
 }
